@@ -40,18 +40,10 @@ header {
 .logo img {
     width: 50px;
     height: 50px;
-    transition: transform 0.25s ease; /* smooth scaling */
+    transition: transform 0.25s ease;
 }
-
-/* Hover: enlarge 110% */
-.logo img:hover {
-    transform: scale(1.1);
-}
-
-/* Click: enlarge 120% */
-.logo img:active {
-    transform: scale(1.2);
-}
+.logo img:hover { transform: scale(1.1); }
+.logo img:active { transform: scale(1.2); }
 
 /* Navigation */
 nav {
@@ -60,7 +52,6 @@ nav {
     align-items: center;
     position: relative;
 }
-
 nav button {
     background: none;
     border: none;
@@ -72,10 +63,7 @@ nav button {
     border-radius: 20px;
     overflow: hidden;
 }
-
 nav button span { position: relative; z-index:1; }
-
-/* Gradient hover border (slower 5s cycle) */
 nav button::before {
     content:'';
     position:absolute;
@@ -83,24 +71,15 @@ nav button::before {
     width: calc(100% + 4px);
     height: calc(100% + 4px);
     border: 2px solid transparent;
-    background: linear-gradient(
-        to left,
-        var(--pink) 0%,
-        var(--purp) 40%,
-        var(--sky-blue) 60%,
-        var(--purp) 80%,
-        var(--pink) 100%
-    );
+    background: linear-gradient(to left,var(--pink) 0%,var(--purp) 40%,var(--sky-blue) 60%,var(--purp) 80%,var(--pink) 100%);
     background-size: 400%;
     transition: opacity 0.5s;
     opacity: 0;
 }
-
 nav button:hover::before {
     opacity: 1;
     animation: gradient-border 5s linear infinite;
 }
-
 @keyframes gradient-border {
     0% { background-position:0% 0%; }
     100% { background-position:400% 0%; }
@@ -117,27 +96,14 @@ nav button:hover::before {
     border-radius: 5px;
     min-width: 180px;
     overflow: hidden;
-    max-height: 0; /* collapsed initially */
+    max-height: 0; 
     transition: max-height 2.5s ease;
     pointer-events: none;
     z-index: 2000;
 }
-
-.dropdown.show {
-    max-height: 500px;
-    pointer-events: auto;
-}
-
-.dropdown a {
-    color: white;
-    padding: 8px 15px;
-    text-decoration: none;
-    display: block;
-}
-
-.dropdown a:hover {
-    background: rgba(255,255,255,0.1);
-}
+.dropdown.show { max-height: 500px; pointer-events: auto; }
+.dropdown a { color: white; padding: 8px 15px; text-decoration: none; display: block; }
+.dropdown a:hover { background: rgba(255,255,255,0.1); }
 
 /* Feed section */
 .feed {
@@ -161,7 +127,26 @@ nav button:hover::before {
     gap: 20px;
 }
 
-/* FEED ITEM with animated underglow */
+/* Feed item wrapper for backlight */
+.feed-item-wrapper {
+    position: relative;
+}
+.feed-item-wrapper::before {
+    content: "";
+    position: absolute;
+    top: -15px; left: -15px;
+    width: calc(100% + 30px);
+    height: calc(100% + 30px);
+    border-radius: 12px;
+    background: linear-gradient(120deg,var(--pink),var(--purp),var(--sky-blue),var(--purp),var(--pink));
+    background-size: 400%;
+    filter: blur(30px);
+    opacity: 0;
+    transition: opacity 0.6s ease, transform 0.6s ease;
+    z-index: -1;
+}
+
+/* Feed item itself */
 .feed-item {
     position: relative;
     display: flex;
@@ -174,58 +159,24 @@ nav button:hover::before {
     text-decoration: none;
     color: white;
     transition: transform 0.3s ease, box-shadow 0.4s ease;
-    overflow: hidden;
-    z-index: 0;
+    z-index: 1;
 }
+.feed-item img { width: 100px; height: 100px; object-fit: cover; border-radius: 5px; }
+.feed-item div { display: flex; flex-direction: column; justify-content: center; }
 
-.feed-item::before {
-    content: "";
-    position: absolute;
-    inset: -2px;
-    border-radius: inherit;
-    background: linear-gradient(
-        120deg,
-        var(--pink),
-        var(--purp),
-        var(--sky-blue),
-        var(--purp),
-        var(--pink)
-    );
-    background-size: 400%;
-    filter: blur(25px);
-    opacity: 0;
-    transform: scale(0.95);
-    z-index: -1;
-    transition: opacity 0.6s ease, transform 0.6s ease;
+/* Hover effects */
+.feed-item-wrapper:hover::before {
+    opacity: 0.8;
+    animation: gradient-shift 5s linear infinite;
 }
-
 .feed-item:hover {
     transform: translateY(-5px) scale(1.02);
     box-shadow: 0 8px 20px rgba(0,0,0,0.5);
 }
 
-.feed-item:hover::before {
-    opacity: 0.8;
-    transform: scale(1);
-    animation: gradient-shift 5s linear infinite;
-}
-
 @keyframes gradient-shift {
     0% { background-position: 0% 50%; }
     100% { background-position: 400% 50%; }
-}
-
-.feed-item img {
-    width: 100px;
-    height: 100px;
-    object-fit: cover;
-    border-radius: 5px;
-}
-
-.feed-item div {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
 }
 
 /* Responsive */
@@ -261,16 +212,10 @@ nav button:hover::before {
 </section>
 
 <script>
-// Contact dropdown: click to toggle, hide when leaving
+// Contact dropdown
 const contactBtn = document.getElementById('contactBtn');
 const contactDropdown = document.getElementById('contactDropdown');
-
-// Toggle dropdown on button click
-contactBtn.addEventListener('click', () => {
-    contactDropdown.classList.toggle('show');
-});
-
-// Hide dropdown when mouse leaves both button and dropdown
+contactBtn.addEventListener('click', () => { contactDropdown.classList.toggle('show'); });
 function hideDropdownOnLeave() {
     setTimeout(() => {
         if (!contactDropdown.matches(':hover') && !contactBtn.matches(':hover')) {
@@ -278,32 +223,30 @@ function hideDropdownOnLeave() {
         }
     }, 50);
 }
-
 contactBtn.addEventListener('mouseleave', hideDropdownOnLeave);
 contactDropdown.addEventListener('mouseleave', hideDropdownOnLeave);
 
-// Fallback JSON for local testing
+// Fallback JSON
 const fallbackPosts = [
   { "title":"New Upload 1", "description":"Description of the post/video/event", "image":"thumb1.jpg", "link":"post1.html" },
   { "title":"New Upload 2", "description":"Description of the post/video/event", "image":"thumb2.jpg", "link":"post2.html" },
   { "title":"New Upload 3", "description":"Description of the post/video/event", "image":"thumb3.jpg", "link":"post3.html" }
 ];
 
-// Load posts dynamically from JSON, fallback to hardcoded if fetch fails
 function loadPosts() {
     const feed = document.getElementById('feed');
     fetch('posts.json')
       .then(res => res.json())
       .then(posts => renderPosts(posts, feed))
-      .catch(err => {
-        console.warn("Failed to load posts.json, using fallback posts.", err);
-        renderPosts(fallbackPosts, feed);
-      });
+      .catch(err => { console.warn("Failed to load posts.json, using fallback posts.", err); renderPosts(fallbackPosts, feed); });
 }
 
 function renderPosts(posts, feed) {
     feed.innerHTML = '';
     posts.forEach(post => {
+        const wrapper = document.createElement('div');
+        wrapper.className = 'feed-item-wrapper';
+
         const item = document.createElement('a');
         item.className = 'feed-item';
         item.href = post.link || '#';
@@ -316,7 +259,8 @@ function renderPosts(posts, feed) {
                 <p>${post.description}</p>
             </div>
         `;
-        feed.appendChild(item);
+        wrapper.appendChild(item);
+        feed.appendChild(wrapper);
     });
 }
 
