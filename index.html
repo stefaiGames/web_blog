@@ -9,7 +9,7 @@
     --pink: #ff3366;
     --purp: #7a3fd1;
     --dark-blue-header: #0B1522;
-    --dark-blue-feed: #101b2b; /* slightly lighter than header */
+    --dark-blue-feed: #101b2b;
     --sky-blue: #7ec8e3;
 }
 
@@ -40,15 +40,13 @@ header {
 .logo img {
     width: 50px;
     height: 50px;
-    transition: transform 0.25s ease; /* smooth scaling */
+    transition: transform 0.25s ease;
 }
 
-/* Hover: enlarge 110% */
+/* Hover & Click scaling */
 .logo img:hover {
     transform: scale(1.1);
 }
-
-/* Click: enlarge 120% */
 .logo img:active {
     transform: scale(1.2);
 }
@@ -75,7 +73,7 @@ nav button {
 
 nav button span { position: relative; z-index:1; }
 
-/* Gradient hover border (slower 5s cycle) */
+/* Gradient hover border */
 nav button::before {
     content:'';
     position:absolute;
@@ -117,7 +115,7 @@ nav button:hover::before {
     border-radius: 5px;
     min-width: 180px;
     overflow: hidden;
-    max-height: 0; /* collapsed initially */
+    max-height: 0;
     transition: max-height 2.5s ease;
     pointer-events: none;
     z-index: 2000;
@@ -139,10 +137,9 @@ nav button:hover::before {
     background: rgba(255,255,255,0.1);
 }
 
-/* Feed section */
+/* Feed Section */
 .feed {
     min-height: 100vh;
-    position: relative;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -150,10 +147,7 @@ nav button:hover::before {
     background-color: var(--dark-blue-feed);
 }
 
-/* Feed content list */
 .feed-content {
-    position: relative;
-    z-index:1;
     width: 100%;
     max-width: 900px;
     display: flex;
@@ -161,7 +155,9 @@ nav button:hover::before {
     gap: 20px;
 }
 
+/* Feed Item */
 .feed-item {
+    position: relative;
     display: flex;
     gap: 15px;
     background: rgba(16,27,43,0.7);
@@ -171,8 +167,41 @@ nav button:hover::before {
     cursor: pointer;
     text-decoration: none;
     color: white;
+    transition: transform 0.3s ease, box-shadow 0.4s ease;
+    overflow: hidden;
+    z-index: 0;
 }
 
+/* Backlight glow effect */
+.feed-item::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: radial-gradient(
+        circle at 50% 100%,
+        rgba(140, 90, 255, 0.5),
+        rgba(90, 200, 255, 0.2),
+        transparent 70%
+    );
+    opacity: 0;
+    transform: translateY(15px) scale(0.95);
+    filter: blur(25px);
+    transition: opacity 0.4s ease, transform 0.4s ease;
+    z-index: -1;
+}
+
+/* Hover animation */
+.feed-item:hover {
+    transform: translateY(-5px) scale(1.02);
+    box-shadow: 0 12px 30px rgba(0,0,0,0.6);
+}
+.feed-item:hover::before {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+}
+
+/* Feed Item Content */
 .feed-item img {
     width: 100px;
     height: 100px;
@@ -219,16 +248,14 @@ nav button:hover::before {
 </section>
 
 <script>
-// Contact dropdown: click to toggle, hide when leaving
+// Contact dropdown toggle
 const contactBtn = document.getElementById('contactBtn');
 const contactDropdown = document.getElementById('contactDropdown');
 
-// Toggle dropdown on button click
 contactBtn.addEventListener('click', () => {
     contactDropdown.classList.toggle('show');
 });
 
-// Hide dropdown when mouse leaves both button and dropdown
 function hideDropdownOnLeave() {
     setTimeout(() => {
         if (!contactDropdown.matches(':hover') && !contactBtn.matches(':hover')) {
@@ -236,18 +263,17 @@ function hideDropdownOnLeave() {
         }
     }, 50);
 }
-
 contactBtn.addEventListener('mouseleave', hideDropdownOnLeave);
 contactDropdown.addEventListener('mouseleave', hideDropdownOnLeave);
 
-// Fallback JSON for local testing
+// Fallback posts
 const fallbackPosts = [
   { "title":"New Upload 1", "description":"Description of the post/video/event", "image":"thumb1.jpg", "link":"post1.html" },
   { "title":"New Upload 2", "description":"Description of the post/video/event", "image":"thumb2.jpg", "link":"post2.html" },
   { "title":"New Upload 3", "description":"Description of the post/video/event", "image":"thumb3.jpg", "link":"post3.html" }
 ];
 
-// Load posts dynamically from JSON, fallback to hardcoded if fetch fails
+// Load posts
 function loadPosts() {
     const feed = document.getElementById('feed');
     fetch('posts.json')
@@ -262,20 +288,18 @@ function loadPosts() {
 function renderPosts(posts, feed) {
     feed.innerHTML = '';
     posts.forEach(post => {
-    const item = document.createElement('div');
-    item.className = 'feed-item';
-
-    const imgSrc = post.image ? post.image : 'placeholder.jpg'; // fallback image
-
-    item.innerHTML = `
-        <img src="${imgSrc}" alt="${post.title}">
-        <div>
-            <strong>${post.title}</strong>
-            <p>${post.description}</p>
-        </div>
-    `;
-    feed.appendChild(item);
-});
+        const item = document.createElement('div');
+        item.className = 'feed-item';
+        const imgSrc = post.image ? post.image : 'placeholder.jpg';
+        item.innerHTML = `
+            <img src="${imgSrc}" alt="${post.title}">
+            <div>
+                <strong>${post.title}</strong>
+                <p>${post.description}</p>
+            </div>
+        `;
+        feed.appendChild(item);
+    });
 }
 
 loadPosts();
