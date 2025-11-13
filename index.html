@@ -9,7 +9,7 @@
     --pink: #ff3366;
     --purp: #7a3fd1;
     --dark-blue-header: #0B1522;
-    --dark-blue-feed: #101b2b; /* slightly lighter than header */
+    --dark-blue-feed: #101b2b;
     --sky-blue: #7ec8e3;
 }
 
@@ -52,8 +52,35 @@ nav {
     align-items: center;
     position: relative;
 }
+
+/* BUTTON WRAPPER FOR BACKLIGHT */
+.nav-button-wrapper {
+    position: relative;
+    display: inline-block;
+}
+
+.nav-button-wrapper::before {
+    content:"";
+    position: absolute;
+    top:-5px; left:-5px;
+    width: calc(100% + 10px);
+    height: calc(100% + 10px);
+    border-radius: 20px;
+    background: linear-gradient(120deg,var(--pink),var(--purp),var(--sky-blue),var(--purp),var(--pink));
+    background-size: 400%;
+    filter: blur(20px);
+    opacity: 0;
+    transition: opacity 0.6s ease;
+    z-index: -1;
+}
+
+.nav-button-wrapper:hover::before {
+    opacity: 0.7;
+    animation: gradient-shift 5s linear infinite;
+}
+
 nav button {
-    background: none;
+    background: rgba(16,27,43,0.9);
     border: none;
     color: white;
     font-size: 1rem;
@@ -62,27 +89,7 @@ nav button {
     cursor: pointer;
     border-radius: 20px;
     overflow: hidden;
-}
-nav button span { position: relative; z-index:1; }
-nav button::before {
-    content:'';
-    position:absolute;
-    top:-2px; left:-2px;
-    width: calc(100% + 4px);
-    height: calc(100% + 4px);
-    border: 2px solid transparent;
-    background: linear-gradient(to left,var(--pink) 0%,var(--purp) 40%,var(--sky-blue) 60%,var(--purp) 80%,var(--pink) 100%);
-    background-size: 400%;
-    transition: opacity 0.5s;
-    opacity: 0;
-}
-nav button:hover::before {
-    opacity: 1;
-    animation: gradient-border 5s linear infinite;
-}
-@keyframes gradient-border {
-    0% { background-position:0% 0%; }
-    100% { background-position:400% 0%; }
+    z-index: 1;
 }
 
 /* Contact dropdown */
@@ -197,9 +204,15 @@ nav button:hover::before {
         </a>
     </div>
     <nav>
-        <button id="productsBtn"><span>Products</span></button>
-        <button id="aboutBtn"><span>About Us</span></button>
-        <button id="contactBtn"><span>Contact Us</span></button>
+        <div class="nav-button-wrapper">
+            <button id="productsBtn"><span>Products</span></button>
+        </div>
+        <div class="nav-button-wrapper">
+            <button id="aboutBtn"><span>About Us</span></button>
+        </div>
+        <div class="nav-button-wrapper">
+            <button id="contactBtn"><span>Contact Us</span></button>
+        </div>
         <div class="dropdown" id="contactDropdown">
             <a href="mailto:stefai.games.unity@gmail.com">Email</a>
             <a href="https://instagram.com/stefaigames" target="_blank">Instagram</a>
