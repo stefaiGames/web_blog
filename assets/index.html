@@ -43,8 +43,32 @@ header {
     z-index: 1000;
     box-shadow: 0 2px 10px rgba(0,0,0,0.5);
 }
-.logo-wrapper { position: relative; display: inline-block; }
-.logo-wrapper img { width:50px; height:50px; border-radius:8px; transition: transform 0.25s ease; }
+
+/* Logo backlight effect */
+.logo-wrapper {
+    position: relative;
+    display: inline-block;
+}
+.logo-wrapper::before {
+    content:"";
+    position: absolute;
+    inset:0;
+    border-radius: 12px;
+    background: linear-gradient(120deg,var(--pink),var(--purp),var(--sky-blue),var(--purp),var(--pink));
+    background-size: 400%;
+    filter: blur(12px);
+    opacity: 0;
+    transition: opacity 0.6s ease;
+    z-index: -1;
+}
+.logo-wrapper:hover::before { 
+    opacity: 0.8; 
+    animation: gradient-shift 10s linear infinite;
+}
+
+.logo-wrapper img { 
+    width:50px; height:50px; border-radius:8px; transition: transform 0.25s ease; 
+}
 .logo-wrapper:hover img { transform: scale(1.08); }
 
 /* NAV BUTTON */
@@ -120,7 +144,7 @@ a.button {
     inset:0;
     border-radius: 16px;
     background: linear-gradient(120deg, var(--pink), var(--purp), var(--sky-blue), var(--purp), var(--pink));
-    background-size:400%;
+    background-size: 400% 100%; /* ensure horizontal movement */
     filter: blur(22px);
     opacity:0;
     transition:0.6s;
@@ -144,7 +168,7 @@ a.button {
     position: relative;
     width: 100%;
     box-sizing: border-box;
-    transition: transform 0.3s ease; /* animation for hover scale */
+    transition: transform 0.3s ease;
 }
 .card.reverse { flex-direction: row-reverse; }
 .card img { width:220px; border-radius:6px; }
@@ -282,10 +306,7 @@ fetch('assets.json')
     .then(res => res.json())
     .then(data => {
         const container = document.getElementById('assets-container');
-
         data.assets.forEach((asset, index) => {
-
-            // Separator
             if (index > 0) {
                 const separator = document.createElement('div');
                 separator.style.height = "1px";
@@ -294,30 +315,24 @@ fetch('assets.json')
                 separator.style.margin = "20px 0";
                 container.appendChild(separator);
             }
-
-            // Card wrapper
             const wrapper = document.createElement('a');
             wrapper.href = asset.link;
             wrapper.className = 'backlight-wrapper';
 
-            // Card
             const card = document.createElement('div');
             card.className = 'card';
             if (index % 2 === 1) card.classList.add('reverse');
 
-            // Main image
             const img = document.createElement('img');
             img.src = asset.image;
             img.alt = asset.name;
 
-            // Text
             const textDiv = document.createElement('div');
             textDiv.className = 'text';
             const desc = document.createElement('p');
             desc.textContent = asset.description;
             textDiv.appendChild(desc);
 
-            // Mini previews
             if (asset.mini && asset.mini.length > 0) {
                 const miniDiv = document.createElement('div');
                 miniDiv.style.display = 'flex';
@@ -332,7 +347,6 @@ fetch('assets.json')
                 textDiv.appendChild(miniDiv);
             }
 
-            // Append
             card.appendChild(img);
             card.appendChild(textDiv);
             wrapper.appendChild(card);
