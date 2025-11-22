@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Stefai Games</title>
+<title>Stefai Games - Assets</title>
 <link rel="icon" href="Images/logo.png" type="image/png">
 <style>
 :root {
@@ -14,11 +14,7 @@
     --dark-blue-feed: #101b2b;
     --dark-blue-alt: #121f33;
     --card-bg: rgba(16,27,43,0.9);
-    --card-bg-light: rgba(16,27,43,0.9);
     --button-bg: rgba(16,27,43,0.9);
-    /* New colors for second card effect */
-    --card-bg-second: rgba(26,36,53,0.95); /* lighter card */
-    --section-bg-second: #0f1825; /* darker surrounding section */
 }
 
 /* Reset */
@@ -106,128 +102,6 @@ a.button {
 }
 .gradient-wrapper:hover a.button { transform: scale(1.06); box-shadow:0 8px 20px rgba(0,0,0,0.5); }
 
-/* Banner */
-.banner {
-    text-align: center;
-    padding: 60px 20px;
-    background-color: var(--dark-blue-header);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 16px;
-    position: relative;
-}
-.banner::after {
-    content:"";
-    position:absolute;
-    width: 120%;
-    height: 120%;
-    top: -10%;
-    left:-10%;
-    background: radial-gradient(circle at center, rgba(255,51,102,0.05), transparent 70%);
-    pointer-events:none;
-    z-index:0;
-}
-.banner img { width: 420px; max-width: 90%; height: auto; border-radius:6px; z-index:1; }
-.banner p { max-width: 900px; color:#ddd; line-height:1.5; font-size:1.1rem; z-index:1; }
-
-.banner .tagline {
-    font-weight: bold;
-    font-size:1.2rem;
-    color: var(--sky-blue);
-    opacity:0;
-    animation: fadeIn 1.5s forwards;
-}
-@keyframes fadeIn { 0%{opacity:0; transform: translateY(10px);} 100%{opacity:1; transform: translateY(0);} }
-
-/* About section */
-.about {
-    text-align:center;
-    max-width:800px;
-    margin: 40px auto 60px auto;
-    color:#ccc;
-    line-height:1.5;
-    font-size:1.05rem;
-}
-
-/* Backlight wrapper for sections/cards */
-.backlight-wrapper {
-    position: relative;
-    display: block;
-    border-radius: 12px;
-    transition: transform 0.3s ease;
-    width: 100%;
-    margin-bottom: 30px;
-}
-.backlight-wrapper::before {
-    content:"";
-    position: absolute;
-    top:0; left:0;
-    width: 100%;
-    height: 100%;
-    border-radius:16px;
-    background: linear-gradient(120deg, var(--pink), var(--purp), var(--sky-blue), var(--purp), var(--pink));
-    background-size: 400%;
-    filter: blur(20px);
-    opacity: 0;
-    transition: opacity 0.6s ease;
-    z-index:0;
-}
-.backlight-wrapper:hover::before { opacity:0.85; animation:gradient-shift 10s linear infinite; }
-.backlight-wrapper > * { transition: transform 0.28s ease; position: relative; z-index: 1; }
-.backlight-wrapper:hover > * { transform: translateY(-3px) scale(1.01); }
-
-/* Sections */
-.section {
-    width: 100%;
-    padding: 42px 20px;
-    display: flex;
-    justify-content: center;
-}
-.section:nth-child(even) { background-color: var(--dark-blue-alt); }
-.section.games { background-color: var(--section-bg-second); } /* second card section */
-.container {
-    width: 100%;
-    max-width: 1100px;
-    display: flex;
-    flex-direction: column;
-    gap: 22px;
-}
-
-/* Feature cards */
-.card {
-    display: flex;
-    gap: 18px;
-    align-items: center;
-    background: var(--card-bg);
-    padding: 50px 40px;
-    border-radius: 12px;
-    text-decoration: none;
-    color: white;
-    transition: transform 0.28s ease;
-    position: relative;
-    z-index: 1;
-}
-.card.reverse { flex-direction: row-reverse; }
-.card img { width: 220px; height:auto; flex-shrink:0; border-radius:6px; }
-.card .text { flex:1; }
-.card.assets { background: var(--card-bg); }
-.card.games { background: var(--card-bg-second); } /* lighter card for contrast */
-
-/* Mini-previews inside sections */
-.card .mini-preview {
-    width: 100px;
-    height: 60px;
-    border-radius:6px;
-    object-fit:cover;
-    margin-right:10px;
-    flex-shrink:0;
-}
-
-/* Typography */
-.h1 { font-size:2rem; text-align:center; margin:12px 0 6px; }
-.lead { color:#ddd; text-align:center; margin-bottom:8px; }
-
 /* Footer */
 footer {
     background-color: var(--dark-blue-header);
@@ -269,6 +143,7 @@ footer .footer-button {
     background: var(--button-bg);
     color: white;
     text-decoration: none;
+    font-weight: bold;
     transition: transform 0.2s, box-shadow 0.2s;
 }
 footer .footer-button-wrapper:hover .footer-button {
@@ -280,9 +155,6 @@ footer p { margin-top: 20px; font-size:0.9rem; text-align:center; color:#aaa; }
 @keyframes gradient-shift { 0% { background-position:0% 50%; } 100% { background-position:400% 50%; } }
 
 @media (max-width:900px){
-    .card { flex-direction: column; text-align:center; padding:40px 30px; }
-    .card.reverse { flex-direction: column; }
-    .card img { width:90%; height:auto; }
     header { padding:12px 18px }
     nav { gap:10px; flex-wrap: wrap; justify-content:center; }
 }
@@ -300,57 +172,10 @@ footer p { margin-top: 20px; font-size:0.9rem; text-align:center; color:#aaa; }
     </nav>
 </header>
 
-<section class="banner">
-    <img src="Images/banner.png" alt="Stefai Games Banner">
-    <div class="tagline">Tools for Devs. Fun for Players.</div>
-    <p>
-        Stefai Games is a small studio dedicated to making tools for developers and games for players. We focus on quality, creativity, and a smooth experience.
-    </p>
-</section>
-
-<section class="about">
-    <p>
-        Whether you want to build or play games, we’ve got you covered. Our tools make development easier, while our games help you unwind.
-    </p>
-</section>
-
-<section class="section">
-    <div class="container">
-        <h2 class="h1">Build With Us</h2>
-        <a href="https://stefaigames.github.io/assets" class="backlight-wrapper">
-            <div class="card assets">
-                <img src="Images/assets.png" alt="Assets preview">
-                <div class="text">
-                    <p>High-quality Unity tools and workflow helpers to speed up development.</p>
-                    <div style="display:flex; margin-top:12px;">
-                        <img src="Images/assets-mini1.png" class="mini-preview" alt="Mini preview 1">
-                        <img src="Images/assets-mini2.png" class="mini-preview" alt="Mini preview 2">
-                        <img src="Images/assets-mini3.png" class="mini-preview" alt="Mini preview 3">
-                    </div>
-                </div>
-            </div>
-        </a>
-    </div>
-</section>
-
-<section class="section games">
-    <div class="container">
-        <h2 class="h1">Play With Us</h2>
-        <a href="https://games.stefaigames.com" class="backlight-wrapper">
-            <div class="card games reverse">
-                <img src="Images/games.png" alt="Games preview">
-                <div class="text">
-                    <p>Our racing games were made with love and passion, created by car guys, for car guys.</p>
-                    <div style="display:flex; margin-top:12px;">
-                        <img src="Images/games-mini1.png" class="mini-preview" alt="Mini preview 1">
-                        <img src="Images/games-mini2.png" class="mini-preview" alt="Mini preview 2">
-                        <img src="Images/games-mini3.png" class="mini-preview" alt="Mini preview 3">
-                    </div>
-                </div>
-            </div>
-        </a>
-    </div>
-</section>
+<!-- Main content placeholder -->
+<main>
+    <!-- Your assets content will go here -->
+</main>
 
 <footer>
     <div class="footer-container">
