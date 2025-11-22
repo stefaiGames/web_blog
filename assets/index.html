@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Stefai Games - Assets</title>
+<title>Stefai Games Assets</title>
 <link rel="icon" href="../Images/logo.png" type="image/png">
 <style>
 :root {
@@ -102,6 +102,69 @@ a.button {
 }
 .gradient-wrapper:hover a.button { transform: scale(1.06); box-shadow:0 8px 20px rgba(0,0,0,0.5); }
 
+/* Sections */
+.section {
+    width: 100%;
+    padding: 42px 20px;
+    display: flex;
+    justify-content: center;
+}
+.container {
+    width: 100%;
+    max-width: 1100px;
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+}
+
+/* Backlight wrapper for cards */
+.backlight-wrapper {
+    position: relative;
+    display: block;
+    border-radius: 12px;
+    transition: transform 0.3s ease;
+    width: 100%;
+    margin-bottom: 30px;
+}
+.backlight-wrapper::before {
+    content:"";
+    position: absolute;
+    top:0; left:0;
+    width: 100%;
+    height: 100%;
+    border-radius:16px;
+    background: linear-gradient(120deg, var(--pink), var(--purp), var(--sky-blue), var(--purp), var(--pink));
+    background-size: 400%;
+    filter: blur(20px);
+    opacity: 0;
+    transition: opacity 0.6s ease;
+    z-index:0;
+}
+.backlight-wrapper:hover::before { opacity:0.85; animation:gradient-shift 10s linear infinite; }
+.backlight-wrapper > * { transition: transform 0.28s ease; position: relative; z-index: 1; }
+.backlight-wrapper:hover > * { transform: translateY(-3px) scale(1.01); }
+
+/* Card */
+.card {
+    display: flex;
+    gap: 18px;
+    align-items: center;
+    background: var(--card-bg);
+    padding: 50px 40px;
+    border-radius: 12px;
+    text-decoration: none;
+    color: white;
+    transition: transform 0.28s ease;
+    position: relative;
+    z-index: 1;
+}
+.card.reverse { flex-direction: row-reverse; }
+.card img { width: 220px; height:auto; flex-shrink:0; border-radius:6px; }
+.card .text { flex:1; }
+.card .mini-preview {
+    width: 100px; height: 60px; object-fit:cover; border-radius:6px; margin-right:10px; flex-shrink:0;
+}
+
 /* Footer */
 footer {
     background-color: var(--dark-blue-header);
@@ -154,6 +217,9 @@ footer p { margin-top: 20px; font-size:0.9rem; text-align:center; color:#aaa; }
 @keyframes gradient-shift { 0% { background-position:0% 50%; } 100% { background-position:400% 50%; } }
 
 @media (max-width:900px){
+    .card { flex-direction: column; text-align:center; padding:40px 30px; }
+    .card.reverse { flex-direction: column; }
+    .card img { width:90%; height:auto; }
     header { padding:12px 18px }
     nav { gap:10px; flex-wrap: wrap; justify-content:center; }
 }
@@ -171,10 +237,11 @@ footer p { margin-top: 20px; font-size:0.9rem; text-align:center; color:#aaa; }
     </nav>
 </header>
 
-<!-- Main content placeholder -->
-<main>
-    <!-- Your assets content will go here -->
-</main>
+<section class="section">
+    <div class="container" id="assets-container">
+        <!-- Cards will be injected here via JS -->
+    </div>
+</section>
 
 <footer>
     <div class="footer-container">
@@ -206,6 +273,56 @@ footer p { margin-top: 20px; font-size:0.9rem; text-align:center; color:#aaa; }
     </div>
     <p>© 2025 Stefai Games. All rights reserved.</p>
 </footer>
+
+<script>
+// Fetch the JSON and generate cards dynamically
+fetch('assets.json')
+.then(res => res.json())
+.then(data => {
+    const container = document.getElementById('assets-container');
+    data.assets.forEach(asset => {
+        const cardWrapper = document.createElement('a');
+        cardWrapper.href = asset.link;
+        cardWrapper.className = 'backlight-wrapper';
+
+        const card = document.createElement('div');
+        card.className = 'card';
+
+        // Main image
+        const img = document.createElement('img');
+        img.src = asset.image;
+        img.alt = asset.name;
+
+        // Text container
+        const textDiv = document.createElement('div');
+        textDiv.className = 'text';
+        const desc = document.createElement('p');
+        desc.textContent = asset.description;
+        textDiv.appendChild(desc);
+
+        // Optional mini previews
+        if(asset.mini && asset.mini.length > 0){
+            const miniDiv = document.createElement('div');
+            miniDiv.style.display = 'flex';
+            miniDiv.style.marginTop = '12px';
+            asset.mini.forEach(miniImg => {
+                const miniEl = document.createElement('img');
+                miniEl.className = 'mini-preview';
+                miniEl.src = miniImg;
+                miniEl.alt = 'Mini preview';
+                miniDiv.appendChild(miniEl);
+            });
+            textDiv.appendChild(miniDiv);
+        }
+
+        card.appendChild(img);
+        card.appendChild(textDiv);
+        cardWrapper.appendChild(card);
+        container.appendChild(cardWrapper);
+    });
+})
+.catch(err => console.error('Failed to load assets JSON:', err));
+</script>
 
 </body>
 </html>

@@ -1,0 +1,25 @@
+{
+  "assets": [
+    {
+      "name": "TreeUI",
+      "description": "High-quality Tree UI package for Unity.",
+      "image": "Images/treeui.png",
+      "mini": [
+        "Images/treeui-mini1.png",
+        "Images/treeui-mini2.png",
+        "Images/treeui-mini3.png"
+      ],
+      "link": "https://assetstore.unity.com/packages/slug/123456"
+    },
+    {
+      "name": "Car Physics Kit",
+      "description": "Realistic car physics for your racing games.",
+      "image": "Images/carphysics.png",
+      "mini": [
+        "Images/carphysics-mini1.png",
+        "Images/carphysics-mini2.png"
+      ],
+      "link": "https://assetstore.unity.com/packages/slug/654321"
+    }
+  ]
+}
