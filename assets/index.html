@@ -221,63 +221,75 @@ footer {
 </footer>
 
 <script>
-fetch("assets.json")
-.then(res => res.json())
-.then(data => {
-    const container = document.getElementById("assets-container");
+fetch('assets.json')
+    .then(res => res.json())
+    .then(data => {
+        const container = document.getElementById('assets-container');
 
-    data.categories.forEach(category => {
-        const block = document.createElement("div");
-        block.className = "category-block";
+        data.assets.forEach((asset, index) => {
 
-        const title = document.createElement("h2");
-        title.className = "category-title";
-        title.textContent = category.name;
-
-        block.appendChild(title);
-
-        category.assets.forEach((asset, idx) => {
-            const wrap = document.createElement("a");
-            wrap.href = asset.link;
-            wrap.className = "backlight-wrapper";
-
-            const card = document.createElement("div");
-            card.className = "card";
-            if (idx % 2 === 1) card.classList.add("reverse");
-
-            const img = document.createElement("img");
-            img.src = asset.image;
-
-            const text = document.createElement("div");
-            const p = document.createElement("p");
-            p.textContent = asset.description;
-
-            text.appendChild(p);
-
-            if (asset.mini && asset.mini.length > 0) {
-                const miniRow = document.createElement("div");
-                miniRow.style.marginTop = "12px";
-                miniRow.style.display = "flex";
-
-                asset.mini.forEach(src => {
-                    const m = document.createElement("img");
-                    m.className = "mini-preview";
-                    m.src = src;
-                    miniRow.appendChild(m);
-                });
-
-                text.appendChild(miniRow);
+            // --- SEPARATOR BETWEEN CARDS ---
+            if (index > 0) {
+                const separator = document.createElement('div');
+                separator.style.height = "1px";
+                separator.style.width = "100%";
+                separator.style.background = "linear-gradient(90deg, transparent, var(--purp), transparent)";
+                separator.style.margin = "20px 0";
+                container.appendChild(separator);
             }
 
-            card.appendChild(img);
-            card.appendChild(text);
-            wrap.appendChild(card);
-            block.appendChild(wrap);
-        });
+            // --- CARD WRAPPER ---
+            const wrapper = document.createElement('a');
+            wrapper.href = asset.link;
+            wrapper.className = 'backlight-wrapper';
 
-        container.appendChild(block);
-    });
-});
+            // --- CARD ---
+            const card = document.createElement('div');
+            card.className = 'card';
+
+            // alternate layout
+            if (index % 2 === 1) {
+                card.classList.add('reverse');
+            }
+
+            // main image
+            const img = document.createElement('img');
+            img.src = asset.image;
+            img.alt = asset.name;
+
+            // text container
+            const textDiv = document.createElement('div');
+            textDiv.className = 'text';
+
+            const desc = document.createElement('p');
+            desc.textContent = asset.description;
+            textDiv.appendChild(desc);
+
+            // mini previews
+            if (asset.mini && asset.mini.length > 0) {
+                const miniDiv = document.createElement('div');
+                miniDiv.style.display = 'flex';
+                miniDiv.style.marginTop = '12px';
+
+                asset.mini.forEach(src => {
+                    const m = document.createElement('img');
+                    m.className = 'mini-preview';
+                    m.src = src;
+                    m.alt = "Mini preview";
+                    miniDiv.appendChild(m);
+                });
+
+                textDiv.appendChild(miniDiv);
+            }
+
+            // append everything
+            card.appendChild(img);
+            card.appendChild(textDiv);
+            wrapper.appendChild(card);
+            container.appendChild(wrapper);
+        });
+    })
+    .catch(err => console.error('Failed to load assets JSON:', err));
 </script>
 
 </body>

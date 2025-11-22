@@ -1,19 +1,13 @@
 {
-    "categories": [
+    "assets": [
         {
-            "name": "UI Tools",
-            "color": "#1a2940",
-            "assets": [
-                {
-                    "name": "TreeUI",
-                    "link": "https://assetstore.unity.com/",
-                    "image": "../Images/treeui_cover.png",
-                    "description": "A powerful UI system for Unity.",
-                    "mini": [
-                        "../Images/treeui_mini1.png",
-                        "../Images/treeui_mini2.png"
-                    ]
-                }
+            "name": "TreeUI",
+            "description": "A fast and lightweight UI system…",
+            "image": "../Images/treeui.png",
+            "link": "https://assetstore.unity.com/…",
+            "mini": [
+                "../Images/treeui_mini1.png",
+                "../Images/treeui_mini2.png"
             ]
         }
     ]
