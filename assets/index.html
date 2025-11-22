@@ -48,27 +48,24 @@ header {
 .logo-wrapper {
     position: relative;
     display: inline-block;
+    border-radius: 20px;
 }
 .logo-wrapper::before {
     content:"";
     position: absolute;
-    inset:0;
-    border-radius: 12px;
+    top:-10px; left:-10px;
+    width: calc(100% + 20px);
+    height: calc(100% + 20px);
+    border-radius: 20px;
     background: linear-gradient(120deg,var(--pink),var(--purp),var(--sky-blue),var(--purp),var(--pink));
     background-size: 400%;
-    filter: blur(12px);
+    filter: blur(10px);
     opacity: 0;
     transition: opacity 0.6s ease;
-    z-index: -1;
+    z-index:-1;
 }
-.logo-wrapper:hover::before { 
-    opacity: 0.8; 
-    animation: gradient-shift 10s linear infinite;
-}
-
-.logo-wrapper img { 
-    width:50px; height:50px; border-radius:8px; transition: transform 0.25s ease; 
-}
+.logo-wrapper:hover::before { opacity: 0.9; animation: gradient-shift 10s linear infinite; }
+.logo-wrapper img { width:50px; height:50px; border-radius:8px; transition: transform 0.25s ease; }
 .logo-wrapper:hover img { transform: scale(1.08); }
 
 /* NAV BUTTON */
@@ -250,7 +247,7 @@ footer p { margin-top: 20px; font-size:0.9rem; text-align:center; color:#aaa; }
 
 <header>
     <div class="logo-wrapper">
-        <a href="https://stefaigames.github.io/"><img src="../Images/logo.png"></a>
+        <a href="https://stefaigames.github.io/"><img src="../Images/logo.png" alt="Stefai Games logo"></a>
     </div>
     <nav>
         <div class="gradient-wrapper"><a class="button" href="https://stefaigames.github.io/assets/">Assets</a></div>
