@@ -16,7 +16,7 @@
     --dark-blue-alt: #121f33;
     --intro-bg: #0f1a27;
     --category-bg: #0d1622;
-    --card-bg: rgba(16,27,43,0.9);
+    --card-bg: rgba(16,27,43,1); /* made fully opaque */
     --button-bg: rgba(16,27,43,0.9);
 }
 
@@ -29,7 +29,7 @@ body {
     overflow-x: hidden;
 }
 
-/* HEADER (unchanged) */
+/* HEADER */
 header {
     position: sticky;
     top: 0;
@@ -42,16 +42,11 @@ header {
     z-index: 1000;
     box-shadow: 0 2px 10px rgba(0,0,0,0.5);
 }
-.logo-wrapper {
-    position: relative;
-    display: inline-block;
-}
-.logo-wrapper img {
-    width:50px; height:50px; border-radius:8px; transition: transform 0.25s ease;
-}
+.logo-wrapper { position: relative; display: inline-block; }
+.logo-wrapper img { width:50px; height:50px; border-radius:8px; transition: transform 0.25s ease; }
 .logo-wrapper:hover img { transform: scale(1.08); }
 
-/* NAV BUTTON GRADIENT GLOW */
+/* NAV BUTTON */
 .gradient-wrapper {
     position: relative;
     display: inline-block;
@@ -85,9 +80,7 @@ a.button {
     z-index: 1;
     transition: 0.25s ease;
 }
-.gradient-wrapper:hover a.button {
-    transform: scale(1.06);
-}
+.gradient-wrapper:hover a.button { transform: scale(1.06); }
 
 /* INTRO SECTION */
 .intro {
@@ -111,25 +104,6 @@ a.button {
     opacity: 0.85;
 }
 
-/* CATEGORY TITLE */
-.category-title {
-    font-size: 1.8rem;
-    margin: 40px 0 18px;
-    text-align: left;
-    padding-left: 10px;
-    border-left: 4px solid var(--sky-blue);
-    opacity: 0.9;
-}
-
-/* CATEGORY WRAPPER */
-.category-block {
-    background: var(--category-bg);
-    padding: 30px;
-    border-radius: 16px;
-    margin-bottom: 50px;
-    box-shadow: 0 0 45px rgba(0,0,0,0.35);
-}
-
 /* CARD WRAPPER */
 .backlight-wrapper {
     margin: 30px 0;
@@ -148,6 +122,7 @@ a.button {
     filter: blur(22px);
     opacity:0;
     transition:0.6s;
+    z-index: -1;
 }
 .backlight-wrapper:hover::before {
     opacity:0.8;
@@ -159,11 +134,12 @@ a.button {
     display:flex;
     gap:20px;
     align-items:center;
-    background:var(--card-bg);
+    background: var(--card-bg);
     padding:50px 40px;
     border-radius:12px;
     text-decoration:none;
     color:white;
+    position: relative; /* ensures it sits above the pseudo-element */
 }
 .card.reverse { flex-direction: row-reverse; }
 .card img { width:220px; border-radius:6px; }
@@ -182,7 +158,7 @@ a.button {
  100% { background-position: 400% 50%; }
 }
 
-/* FOOTER same as before */
+/* FOOTER */
 footer {
     background-color: var(--dark-blue-header);
     padding: 50px 20px;
@@ -203,7 +179,6 @@ footer {
     </nav>
 </header>
 
-<!-- INTRO SECTION -->
 <section class="intro">
     <h1>Asset Collection</h1>
     <p>
@@ -228,7 +203,7 @@ fetch('assets.json')
 
         data.assets.forEach((asset, index) => {
 
-            // --- SEPARATOR BETWEEN CARDS ---
+            // Separator
             if (index > 0) {
                 const separator = document.createElement('div');
                 separator.style.height = "1px";
@@ -238,39 +213,33 @@ fetch('assets.json')
                 container.appendChild(separator);
             }
 
-            // --- CARD WRAPPER ---
+            // Card wrapper
             const wrapper = document.createElement('a');
             wrapper.href = asset.link;
             wrapper.className = 'backlight-wrapper';
 
-            // --- CARD ---
+            // Card
             const card = document.createElement('div');
             card.className = 'card';
+            if (index % 2 === 1) card.classList.add('reverse');
 
-            // alternate layout
-            if (index % 2 === 1) {
-                card.classList.add('reverse');
-            }
-
-            // main image
+            // Main image
             const img = document.createElement('img');
             img.src = asset.image;
             img.alt = asset.name;
 
-            // text container
+            // Text
             const textDiv = document.createElement('div');
             textDiv.className = 'text';
-
             const desc = document.createElement('p');
             desc.textContent = asset.description;
             textDiv.appendChild(desc);
 
-            // mini previews
+            // Mini previews
             if (asset.mini && asset.mini.length > 0) {
                 const miniDiv = document.createElement('div');
                 miniDiv.style.display = 'flex';
                 miniDiv.style.marginTop = '12px';
-
                 asset.mini.forEach(src => {
                     const m = document.createElement('img');
                     m.className = 'mini-preview';
@@ -278,11 +247,10 @@ fetch('assets.json')
                     m.alt = "Mini preview";
                     miniDiv.appendChild(m);
                 });
-
                 textDiv.appendChild(miniDiv);
             }
 
-            // append everything
+            // Append
             card.appendChild(img);
             card.appendChild(textDiv);
             wrapper.appendChild(card);
